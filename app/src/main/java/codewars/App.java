@@ -4,7 +4,7 @@
 package codewars;
 
 public class App {
-    public static void main(String[] args) {
-        // main
+    public static boolean isSquare(int n) {
+        return Math.sqrt(n) == Math.floor(Math.sqrt(n));
     }
 }
