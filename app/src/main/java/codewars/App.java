@@ -4,7 +4,13 @@
 package codewars;
 
 public class App {
-    public static void main(String[] args) {
-        // main
+    public static String makeComplement(String dna) {
+        return dna.chars().mapToObj(i -> (char) i).map((c) -> {
+            if(c == 'A') return "T";
+            else if(c == 'T') return "A";
+            else if(c == 'C') return "G";
+            else if(c == 'G') return "C";
+            else return String.valueOf(c);
+        }).reduce("", (a, e) -> a + e);
     }
 }

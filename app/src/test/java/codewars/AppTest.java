@@ -3,6 +3,29 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AppTest {
+  @Test
+  public void test01() {
+    assertEquals("TTTT", App.makeComplement("AAAA"));
+  }
+  @Test
+  public void test02() {
+    assertEquals("TAACG", App.makeComplement("ATTGC"));
+  }
+  @Test
+  public void test03() {
+    assertEquals("CATA", App.makeComplement("GTAT"));
+  }
+  @Test
+  public void testEmpty() {
+    assertEquals("", App.makeComplement(""));
+  }
+  @Test
+  public void testLong() {
+    assertEquals("TGGCATCCGATTCGAATTAGCTCCGAGATC", App.makeComplement("ACCGTAGGCTAAGCTTAATCGAGGCTCTAG"));
+  }
 }
