@@ -3,8 +3,26 @@
  */
 package codewars;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 public class App {
-    public static void main(String[] args) {
-        // main
+    public static String order(String words) {
+      if(words.isEmpty()) return "";
+
+      String[] split = words.split(" ");
+      Pattern pattern = Pattern.compile("\\d");
+      return Arrays.stream(split) //
+          .sorted(Comparator.comparingInt(w -> {
+              Matcher m = pattern.matcher(w);
+              if(m.find()) {
+                return Integer.parseInt(m.group(0));
+              }
+              return Integer.MAX_VALUE;
+          })) //
+          .collect(Collectors.joining(" "));
     }
 }
