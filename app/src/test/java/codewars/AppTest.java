@@ -4,11 +4,32 @@
 package codewars;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+
+    @Test
+    public void testSomeUnderscoreLowerStart() {
+        String input = "the_Stealth_Warrior";
+        assertEquals("theStealthWarrior", App.toCamelCase(input));
+    }
+
+    @Test
+    public void testSomeDashLowerStart() {
+        String input = "the-Stealth-Warrior";
+        assertEquals("theStealthWarrior", App.toCamelCase(input));
+    }
+
+    @Test
+    public void testSomeUnderscoreUpperStart() {
+        String input = "The_Stealth_Warrior";
+        assertEquals("TheStealthWarrior", App.toCamelCase(input));
+    }
+
+    @Test
+    public void testSomeDashUpperStart() {
+        String input = "The-Stealth-Warrior";
+        assertEquals("TheStealthWarrior", App.toCamelCase(input));
     }
 }

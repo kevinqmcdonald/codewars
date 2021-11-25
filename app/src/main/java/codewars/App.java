@@ -3,12 +3,26 @@
  */
 package codewars;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+
+  static String toCamelCase(String s) {
+    String firstWord;
+    String[] split;
+    if(s.contains("-")) {
+      split = s.split("-");
+    } else if(s.contains("_")) {
+      split = s.split("_");
+    } else {
+      return s;
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-    }
+    // Don't change the first word
+    firstWord = split[0];
+    return firstWord + Arrays.stream(split).skip(1) //
+        .map((w) -> w.substring(0, 1).toUpperCase() + w.substring(1)) //
+        .collect(Collectors.joining());
+  }
 }
