@@ -4,7 +4,21 @@
 package codewars;
 
 public class App {
-    public static void main(String[] args) {
-        // main
+  public static int sequence(int[] arr) {
+    // Kadane's algorithm
+    int maxSoFar = 0;
+    int maxEndingHere = 0;
+    for (int j : arr) {
+      maxEndingHere = maxEndingHere + j;
+      if (maxSoFar < maxEndingHere) {
+        maxSoFar = maxEndingHere;
+      }
+
+      if (maxEndingHere < 0) {
+        maxEndingHere = 0;
+      }
     }
+
+    return maxSoFar;
+  }
 }
