@@ -3,8 +3,42 @@
  */
 package codewars;
 
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 public class App {
-  public static void main(String[] args) {
-    // main
+
+  Pattern lettersOnly = Pattern.compile("\\p{Alpha}");
+  private static final List<String> ALPHABET = new ArrayList<>();
+  static {
+    ALPHABET.add("A");ALPHABET.add("B");
+    ALPHABET.add("C");ALPHABET.add("D");
+    ALPHABET.add("E");ALPHABET.add("F");
+    ALPHABET.add("G");ALPHABET.add("H");
+    ALPHABET.add("I");ALPHABET.add("J");
+    ALPHABET.add("K");ALPHABET.add("L");
+    ALPHABET.add("M");ALPHABET.add("N");
+    ALPHABET.add("O");ALPHABET.add("P");
+    ALPHABET.add("Q");ALPHABET.add("R");
+    ALPHABET.add("S");ALPHABET.add("T");
+    ALPHABET.add("U");ALPHABET.add("V");
+    ALPHABET.add("W");ALPHABET.add("X");
+    ALPHABET.add("Y");ALPHABET.add("Z");
+  }
+
+  public boolean check(String sentence){
+    String[] words = sentence.split(" ");
+    Set<String> sentenceLetters = new HashSet<>();
+    for(String word : words) {
+      sentenceLetters.addAll(
+        Arrays.stream(word.split(""))
+          .filter(w -> lettersOnly.matcher(w).matches())
+          .map(String::toUpperCase)
+          .collect(Collectors.toList())
+      );
+    }
+
+    return sentenceLetters.containsAll(ALPHABET);
   }
 }
