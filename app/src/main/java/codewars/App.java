@@ -3,8 +3,14 @@
  */
 package codewars;
 
+import java.util.Arrays;
+
 public class App {
-  public static void main(String[] args) {
-    // main
+  static int[] findLargestAndSmallest(int[] nums) {
+    if(nums == null || nums.length == 0) return null;
+
+    int min = Arrays.stream(nums).min().orElseThrow();
+    int max = Arrays.stream(nums).max().orElseThrow();
+    return new int[]{min, max};
   }
 }
