@@ -9,11 +9,7 @@ public class App {
     int first = integers[0];
     int second = integers[1];
     if(!isSameParity(first, second)) {
-      if(isSameParity(first, integers[2])) {
-        return second;
-      } else {
-        return first;
-      }
+      return isSameParity(first, integers[2]) ? second : first;
     }
 
     // iterate until we find the different one
