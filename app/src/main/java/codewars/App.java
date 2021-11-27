@@ -3,8 +3,27 @@
  */
 package codewars;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
-    public static void main(String[] args) {
-        // main
+  public static int persistence(long n) {
+    // Base case
+    if(n < 10) return 0;
+
+    // Break n into its digits
+    List<Long> digits = new ArrayList<>();
+    while(n > 0) {
+      digits.add(n % 10);
+      n /= 10;
     }
+
+    // Multiply
+    long product = digits.stream().reduce(1L, Math::multiplyExact);
+    if(product < 10) {
+      return 1;
+    } else { // Recursive call
+      return 1 + persistence(product);
+    }
+  }
 }

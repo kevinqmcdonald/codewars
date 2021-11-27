@@ -3,6 +3,17 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AppTest {
+  @Test
+  public void BasicTests() {
+    System.out.println("****** Basic Tests ******");
+    assertEquals(3, App.persistence(39));
+    assertEquals(0, App.persistence(4));
+    assertEquals(2, App.persistence(25));
+    assertEquals(4, App.persistence(999));
+  }
 }
