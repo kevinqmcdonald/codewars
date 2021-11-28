@@ -3,8 +3,37 @@
  */
 package codewars;
 
+import java.awt.Point;
+
 public class App {
-  public static void main(String[] args) {
-    // main
+  public static boolean isValid(char[] walk) {
+    // Only exactly 10 minutes
+    if(walk.length != 10) return false;
+
+    Point position = new Point(0, 0);
+    for(char step : walk) {
+      stepInDirection(position, step);
+    }
+
+    return position.x == 0 && position.y == 0;
+  }
+
+  private static void stepInDirection(Point position, char direction) {
+    switch (direction) {
+      case 'n':
+        position.y++;
+        break;
+      case 's':
+        position.y--;
+        break;
+      case 'e':
+        position.x++;
+        break;
+      case 'w':
+        position.x--;
+        break;
+      default:
+        throw new IllegalArgumentException("Illegal direction entered!");
+    }
   }
 }

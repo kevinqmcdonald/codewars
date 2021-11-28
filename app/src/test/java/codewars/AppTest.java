@@ -3,6 +3,18 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class AppTest {
+  @Test
+  public void Test() {
+    assertTrue(App.isValid(new char[] {'n','s','n','s','n','s','n','s','n','s'}));
+    assertFalse(App.isValid(new char[] {'w','e','w','e','w','e','w','e','w','e','w','e'}));
+    assertFalse(App.isValid(new char[] {'w'}));
+    assertFalse(App.isValid(new char[] {'n','n','n','s','n','s','n','s','n','s'}));
+    assertTrue(App.isValid(new char[] {'n','e','s','w','n','e','s','w','n','s'}));
+  }
 }
