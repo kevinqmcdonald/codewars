@@ -3,8 +3,24 @@
  */
 package codewars;
 
+import java.util.Arrays;
+
 public class App {
-  public static void main(String[] args) {
-    // main
+  public static int findEvenIndex(int[] arr) {
+    for(int i = 0; i < arr.length; ++i) {
+      int leftSum = 0;
+      if(i > 0) {
+        leftSum = Arrays.stream(Arrays.copyOfRange(arr, 0, i)).sum();
+      }
+
+      int rightSum = 0;
+      if(i + 1 != arr.length) {
+        rightSum = Arrays.stream(Arrays.copyOfRange(arr, i + 1, arr.length)).sum();
+      }
+
+      if(leftSum == rightSum) return i;
+    }
+
+    return -1;
   }
 }
