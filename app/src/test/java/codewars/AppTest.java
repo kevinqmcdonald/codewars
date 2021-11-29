@@ -3,6 +3,52 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AppTest {
+  @Test
+  public void testToRoman() throws Exception {
+    assertEquals("I", App.toRoman(1));
+    assertEquals("II", App.toRoman(2));
+    assertEquals("IV", App.toRoman(4));
+    assertEquals("V", App.toRoman(5));
+    assertEquals("VI", App.toRoman(6));
+    assertEquals("X", App.toRoman(10));
+    assertEquals("XL", App.toRoman(40));
+    assertEquals("XLIX", App.toRoman(49));
+    assertEquals("LXXIX", App.toRoman(79));
+    assertEquals("XC", App.toRoman(90));
+    assertEquals("C", App.toRoman(100));
+    assertEquals("D", App.toRoman(500));
+    assertEquals("DCCCXLV", App.toRoman(845));
+    assertEquals("CMLXIV", App.toRoman(964));
+    assertEquals("M", App.toRoman(1000));
+    assertEquals("MCMXC", App.toRoman(1990));
+    assertEquals("MMXXII", App.toRoman(2022));
+    assertEquals("MMCMXLVII", App.toRoman(2947));
+  }
+
+  @Test
+  public void testFromRoman() {
+    assertEquals(1, App.fromRoman("I"));
+    assertEquals(2, App.fromRoman("II"));
+    assertEquals(4, App.fromRoman("IV"));
+    assertEquals(5, App.fromRoman("V"));
+    assertEquals(6, App.fromRoman("VI"));
+    assertEquals(10, App.fromRoman("X"));
+    assertEquals(40, App.fromRoman("XL"));
+    assertEquals(49, App.fromRoman("XLIX"));
+    assertEquals(79, App.fromRoman("LXXIX"));
+    assertEquals(90, App.fromRoman("XC"));
+    assertEquals(100, App.fromRoman("C"));
+    assertEquals(500, App.fromRoman("D"));
+    assertEquals(845, App.fromRoman("DCCCXLV"));
+    assertEquals(964, App.fromRoman("CMLXIV"));
+    assertEquals(1000, App.fromRoman("M"));
+    assertEquals(1990, App.fromRoman("MCMXC"));
+    assertEquals(2022, App.fromRoman("MMXXII"));
+    assertEquals(2947, App.fromRoman("MMCMXLVII"));
+  }
 }
