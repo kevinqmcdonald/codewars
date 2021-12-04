@@ -3,8 +3,25 @@
  */
 package codewars;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class App {
-  public static void main(String[] args) {
-    // main
+  public static String longToIP(long ip) {
+    StringBuilder binary = new StringBuilder(Long.toBinaryString(ip));
+    while(binary.length() < 32) {
+      binary.insert(0, "0");
+    }
+
+    List<String> octets = new ArrayList<>(4);
+    octets.add(binary.substring(0, 8));
+    octets.add(binary.substring(8, 16));
+    octets.add(binary.substring(16, 24));
+    octets.add(binary.substring(24));
+
+    return octets.stream()
+      .map(oc -> String.valueOf(Long.parseUnsignedLong(oc, 2)))
+      .collect(Collectors.joining("."));
   }
 }

@@ -3,6 +3,15 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AppTest {
+  @Test
+  public void sampleTest() {
+    assertEquals("128.114.17.104", App.longToIP(2154959208L));
+    assertEquals("0.0.0.0", App.longToIP(0));
+    assertEquals("128.32.10.1", App.longToIP(2149583361L));
+  }
 }
