@@ -3,6 +3,120 @@
  */
 package codewars;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 class AppTest {
 
+  private User user;
+
+  @BeforeEach
+  void beforeEach() {
+    user = new User();
+  }
+
+  @Test
+  void testDefaults() {
+    assertEquals(-8, user.rank);
+    assertEquals(0, user.progress);
+  }
+
+  @Test
+  void testIncrementProgress_2RanksBelow() {
+    user.rank = -6;
+    user.incProgress(-8);
+    assertEquals(-6, user.rank);
+    assertEquals(0, user.progress);
+  }
+
+  @Test
+  void testIncrementProgress_1RankBelow() {
+    user.rank = -6;
+    user.incProgress(-7);
+    assertEquals(-6, user.rank);
+    assertEquals(1, user.progress);
+  }
+
+  @Test
+  void testIncrementProgress_EqualRank() {
+    user.rank = -6;
+    user.incProgress(-6);
+    assertEquals(-6, user.rank);
+    assertEquals(3, user.progress);
+  }
+
+  @Test
+  void testIncrementProgress_1RankAbove() {
+    user.rank = -6;
+    user.incProgress(-5);
+    assertEquals(-6, user.rank);
+    assertEquals(10, user.progress);
+  }
+
+  @Test
+  void testIncrementProgress_2RanksAbove() {
+    user.rank = -6;
+    user.incProgress(-4);
+    assertEquals(-6, user.rank);
+    assertEquals(40, user.progress);
+  }
+
+  @Test
+  void testIncrementProgress_3RanksAbove() {
+    user.rank = -6;
+    user.incProgress(-3);
+    assertEquals(-6, user.rank);
+    assertEquals(90, user.progress);
+  }
+
+  @Test
+  void testIncrementRank() {
+    user.rank = -6;
+    user.incProgress(-3);
+    assertEquals(-6, user.rank);
+    assertEquals(90, user.progress);
+    user.incProgress(-5);
+    assertEquals(-5, user.rank);
+    assertEquals(0, user.progress);
+  }
+
+  @Test
+  void testIncrementRank_StartingRankNegative1() {
+    user.rank = -1;
+    user.incProgress(3);
+    assertEquals(-1, user.rank);
+    assertEquals(90, user.progress);
+    user.incProgress(1);
+    assertEquals(1, user.rank);
+    assertEquals(0, user.progress);
+  }
+
+  @Test
+  void testIncrementRank_MultipleRanks() {
+    user.rank = -8;
+    user.incProgress(1);
+    assertEquals(-2, user.rank);
+    assertEquals(40, user.progress);
+  }
+
+  @Test
+  void testIllegalActivityRank() {
+    try {
+      user.incProgress(999);
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+      // pass
+    }
+  }
+
+  @Test
+  void testIncProgress_StartingRank8() {
+    user.rank = 8;
+    user.incProgress(-4);
+    assertEquals(8, user.rank);
+    assertEquals(0, user.progress);
+  }
 }
