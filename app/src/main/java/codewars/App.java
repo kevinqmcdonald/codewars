@@ -4,7 +4,16 @@
 package codewars;
 
 public class App {
-  public static void main(String[] args) {
-    // main
+  public static int zeros(int n) {
+    if(n == 0) return 0;
+
+    // https://mathworld.wolfram.com/Factorial.html
+    int zeros = 0;
+    int kmax = (int) Math.floor(Math.log10(n) / Math.log10(5));
+    for(int k = 1; k <= kmax; ++k) {
+      zeros += Math.floorDiv(n, (int) Math.pow(5, k));
+    }
+
+    return zeros;
   }
 }
