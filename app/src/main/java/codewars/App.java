@@ -3,8 +3,188 @@
  */
 package codewars;
 
+import java.util.*;
+
 public class App {
-  public static void main(String[] args) {
-    // main
+
+  private static int numBattleships = 0;
+  private static final int MAX_BATTLESHIPS = 1;
+  private static final int BATTLESHIP_SIZE = 4;
+
+  private static int numCruisers = 0;
+  private static final int MAX_CRUISERS = 2;
+  private static final int CRUISER_SIZE = 3;
+
+  private static int numDestroyers = 0;
+  private static final int MAX_DESTROYERS = 3;
+  private static final int DESTROYER_SIZE = 2;
+
+  private static int numSubmarines = 0;
+  private static final int MAX_SUBMARINES = 4;
+  private static final int SUBMARINE_SIZE = 1;
+
+  private static final Set<Position> markedPositions = new HashSet<>();
+
+  private static void reset() {
+    numBattleships = 0;
+    numCruisers = 0;
+    numDestroyers = 0;
+    numSubmarines = 0;
+    markedPositions.clear();
+  }
+
+  public static boolean fieldValidator(int[][] field) {
+    if(field.length != 10 || field[0].length != 10) return false;
+
+    // Reset ship counts & marked positions
+    reset();
+
+    // Fail fast for illegal formations
+    for(int row = 0; row < 10; ++row) {
+      for(int col = 0; col < 10; ++col) {
+        if(field[row][col] == 1 && !markedPositions.contains(new Position(row, col))) {
+          markedPositions.add(new Position(row, col));
+          if(hasIllegalFormation(row, col, field)) {
+            return false;
+          } else {
+            try {
+              markShip(row, col, field);
+            } catch (IllegalArgumentException ex) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+
+    // Make sure all ships have been deployed
+    return numBattleships == MAX_BATTLESHIPS
+      && numCruisers == MAX_CRUISERS
+      && numDestroyers == MAX_DESTROYERS
+      && numSubmarines == MAX_SUBMARINES;
+  }
+
+  // Checks all the corners for marked spots
+  private static boolean hasIllegalFormation(int row, int col, int[][] field) {
+    Position nw = new Position(row - 1, col - 1);
+    Position ne = new Position(row - 1, col + 1);
+    Position sw = new Position(row + 1, col - 1);
+    Position se = new Position(row + 1, col + 1);
+    List<Position> positionsToCheck = new ArrayList<>() {
+      {
+        add(nw);
+        add(ne);
+        add(sw);
+        add(se);
+      }
+    };
+
+    if(row == 0) {
+      positionsToCheck.remove(nw);
+      positionsToCheck.remove(ne);
+    } else if(row == 9) {
+      positionsToCheck.remove(sw);
+      positionsToCheck.remove(se);
+    }
+
+    if(col == 0) {
+      positionsToCheck.remove(nw);
+      positionsToCheck.remove(sw);
+    } else if(col == 9) {
+      positionsToCheck.remove(ne);
+      positionsToCheck.remove(se);
+    }
+
+    return positionsToCheck.stream().anyMatch(p -> field[p.row][p.col] == 1);
+  }
+
+  // Marks the ship which contains the given position
+  private static void markShip(int row, int col, int[][] field) {
+    List<Position> shipPositions = new ArrayList<>();
+    Stack<Position> searchStack = new Stack<>();
+
+    // DFS
+    int curRow = row;
+    int curCol = col;
+    searchStack.push(new Position(curRow, curCol));
+    while(!searchStack.isEmpty()) {
+      Position curPos = searchStack.pop();
+      curRow = curPos.row;
+      curCol = curPos.col;
+      shipPositions.add(curPos);
+
+      // Check neighbors
+      if(hasIllegalFormation(curRow, curCol, field)) {
+        throw new IllegalArgumentException();
+      }
+
+      Position n = new Position(curRow + 1, curCol);
+      Position e = new Position(curRow, curCol + 1);
+      Position s = new Position(curRow - 1, curCol);
+      Position w = new Position(curRow, curCol - 1);
+      List<Position> neighbors = new ArrayList<>(){
+        {
+          add(n);
+          add(s);
+          add(e);
+          add(w);
+        }
+      };
+      for(Position neighbor : neighbors) {
+        if(checkValidNeighbor(neighbor, field) && !markedPositions.contains(neighbor)) {
+          markedPositions.add(neighbor);
+          searchStack.push(neighbor);
+        }
+      }
+    }
+
+    // Mark ship
+    switch (shipPositions.size()) {
+      case SUBMARINE_SIZE:
+        numSubmarines++;
+        break;
+      case DESTROYER_SIZE:
+        numDestroyers++;
+        break;
+      case CRUISER_SIZE:
+        numCruisers++;
+        break;
+      case BATTLESHIP_SIZE:
+        numBattleships++;
+        break;
+      default:
+        throw new IllegalArgumentException();
+    }
+  }
+
+  private static boolean checkValidNeighbor(Position neighbor, int[][] field) {
+    try {
+      return field[neighbor.row][neighbor.col] == 1;
+    } catch (IndexOutOfBoundsException ex) {
+      return false;
+    }
+  }
+
+  private static class Position {
+    public final int row;
+    public final int col;
+
+    public Position(int row, int col) {
+      this.row = row;
+      this.col = col;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Position position = (Position) o;
+      return row == position.row && col == position.col;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(row, col);
+    }
   }
 }
