@@ -1,4 +1,3 @@
-# codewars
-Testing skeleton for Code Wars Katas.
-- Base skeleton is `master`
-- Individual katas are branches
+# You're a Square! - 7 Kyu
+
+[Link](https://www.codewars.com/kata/54c27a33fb7da0db0100040e)
