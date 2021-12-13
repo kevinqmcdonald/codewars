@@ -1,4 +1,3 @@
-# codewars
-Testing skeleton for Code Wars Katas.
-- Base skeleton is `master`
-- Individual katas are branches
+# Find the Parity Outlier - 6 Kyu
+
+[Link](https://www.codewars.com/kata/5526fc09a1bbd946250002dc)
