@@ -1,4 +1,3 @@
-# codewars
-Testing skeleton for [codewars](https://www.codewars.com/) Java Katas.
-- Base skeleton is `master`
-- Individual katas are branches
+# Sum of Intervals - 4 Kyu
+
+[Link](https://www.codewars.com/kata/52b7ed099cdc285c300001cd)
