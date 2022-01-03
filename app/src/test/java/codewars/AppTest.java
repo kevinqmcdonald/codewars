@@ -3,6 +3,18 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AppTest {
+  @Test
+  public void exampleTests() {
+    assertEquals("1 second", App.formatDuration(1));
+    assertEquals("1 minute and 2 seconds", App.formatDuration(62));
+    assertEquals("2 minutes", App.formatDuration(120));
+    assertEquals("1 hour", App.formatDuration(3600));
+    assertEquals("1 hour, 1 minute and 2 seconds", App.formatDuration(3662));
+    assertEquals("2 years, 12 days, 3 hours, 29 minutes and 33 seconds", App.formatDuration(64121373));
+  }
 }
