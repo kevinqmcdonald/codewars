@@ -1,4 +1,2 @@
-# codewars
-Testing skeleton for [codewars](https://www.codewars.com/) Java Katas.
-- Base skeleton is `master`
-- Individual katas are branches
+# Ten-Pin Bowling - 4 Kyu
+[Link](https://www.codewars.com/kata/5531abe4855bcc8d1f00004c)
