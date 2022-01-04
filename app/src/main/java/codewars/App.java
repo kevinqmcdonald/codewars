@@ -3,8 +3,72 @@
  */
 package codewars;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
+
 public class App {
-  public static void main(String[] args) {
-    // main
+
+  public static int bowling_score(String frames) {
+    List<String> frameScores = Arrays.asList(frames.split(" "));
+
+    AtomicInteger score = new AtomicInteger();
+    IntStream.range(0, 10).forEach(frame -> {
+      String frameScore = frameScores.get(frame);
+      score.addAndGet(parseFrameScore(frameScore, frameScores.subList(frame + 1, 10)));
+    });
+
+    return score.get();
+  }
+
+  private static int score(String frameScore, int rolls) {
+    if(frameScore.equals("X")) {
+      return 10;
+    } else if(frameScore.equals("XX")) {
+      return 20;
+    } else if(frameScore.length() == 2 && frameScore.endsWith("/") && rolls == 2) {
+      return 10;
+    } else if(frameScore.length() == 2 && frameScore.startsWith("X")) {
+      return 10 + score(frameScore.substring(1), 1);
+    } else if(frameScore.length() == 3) {
+      // Handle scoring 10th frame
+      if(rolls < 3) {
+        return score(frameScore.substring(0, rolls), rolls);
+      } else {
+        if(frameScore.startsWith("X")) {
+          return 10 + score(frameScore.substring(1), 2);
+        } else {
+          return 10 + score(frameScore.substring(2), 1);
+        }
+      }
+    }
+
+    return Arrays.stream(frameScore.split("")).limit(rolls).mapToInt(Integer::parseInt).sum();
+  }
+
+  private static int parseFrameScore(String frameScore, List<String> remainingFrames) {
+    int score = 0;
+    if(frameScore.equals("X")) {
+      score += handleStrike(remainingFrames);
+    } else if(frameScore.endsWith("/") && frameScore.length() == 2) {
+      score += handleSpare(remainingFrames);
+    } else {
+      score += score(frameScore, frameScore.length());
+    }
+
+    return score;
+  }
+
+  private static int handleStrike(List<String> remainingFrames) {
+    if(remainingFrames.get(0).equals("X")) {
+      return 20 + score(remainingFrames.get(1), 1);
+    } else {
+      return 10 + score(remainingFrames.get(0), 2);
+    }
+  }
+
+  private static int handleSpare(List<String> remainingFrames) {
+    return 10 + score(remainingFrames.get(0), 1);
   }
 }

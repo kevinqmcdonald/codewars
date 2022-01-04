@@ -3,6 +3,16 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AppTest {
+  @Test
+  public void BasicTests() {
+    assertEquals(20, App.bowling_score("11 11 11 11 11 11 11 11 11 11"));
+    assertEquals(300, App.bowling_score("X X X X X X X X X XXX"));
+    assertEquals(171, App.bowling_score("X X 9/ 80 X X 90 8/ 7/ 44"));
+    assertEquals(191, App.bowling_score("9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/X"));
+  }
 }
