@@ -5,7 +5,7 @@ package codewars;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class AppTest {
 
@@ -19,7 +19,7 @@ class AppTest {
       {".",".",".",".",".",".",".","."},
       {"P","P","P","P",".","P","P","P"},
       {".",".",".",".",".",".",".","."} };
-    assertEquals(expected, PawnMoveTracker.movePawns(new String[] {"e3", "d6", "e4", "a6"}));
+    assertArrayEquals(expected, PawnMoveTracker.movePawns(new String[]{"e3", "d6", "e4", "a6"}));
   }
 
   @Test
@@ -32,6 +32,26 @@ class AppTest {
       {".",".",".","P",".",".",".","."},
       {"P","P","P",".",".","P","P","P"},
       {".",".",".",".",".",".",".","."} };
-    assertEquals(expected, PawnMoveTracker.movePawns(new String[] {"e4", "d5", "d3", "dxe4"}));
+    assertArrayEquals(expected, PawnMoveTracker.movePawns(new String[] {"e4", "d5", "d3", "dxe4"}));
+  }
+
+  @Test
+  public void exampleTest3() {
+    String[][] expected = { {".",".",".",".",".",".",".","."},
+      {"p","p",".",".","p","p","p","p"},
+      {".",".",".",".",".",".",".","."},
+      {".",".","P","p",".",".",".","."},
+      {".",".",".",".",".","P",".","."},
+      {".",".",".",".",".",".",".","."},
+      {"P","P","P",".","P",".","P","P"},
+      {".",".",".",".",".",".",".","."} };
+    String[][] actual = PawnMoveTracker.movePawns(new String[]{"d4", "d5", "f3", "c6", "f4", "c5", "dxc5"});
+    assertArrayEquals(expected, actual);
+  }
+
+  @Test
+  void errorTest() {
+    String[][] expected = { {"h5 is invalid"} };
+    assertArrayEquals(expected, PawnMoveTracker.movePawns(new String[] {"h5"}));
   }
 }

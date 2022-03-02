@@ -23,7 +23,7 @@ public class PawnMoveTracker {
     boolean isWhiteMove = true;
     for (String move: moves) {
       if(isValidMove(board, move, isWhiteMove)) {
-        makeMove(board, move);
+        makeMove(board, move, isWhiteMove);
         isWhiteMove = !isWhiteMove;
       } else {
         return new String[][]{ { String.format("%s is invalid", move) } };
@@ -33,16 +33,29 @@ public class PawnMoveTracker {
     return board;
   }
 
+  private static boolean isValidMove(String[][] board, String move, boolean isWhiteMove) {
+    return move.contains("x") ?
+      processCapture(board, move, isWhiteMove, true)
+      : processNonCapture(board, move, isWhiteMove, true);
+  }
+
+  private static void makeMove(String[][] board, String move, boolean isWhiteMove) {
+    if(move.contains("x")) {
+      processCapture(board, move, isWhiteMove, false);
+    } else {
+      processNonCapture(board, move, isWhiteMove, false);
+    }
+  }
+
   private static int getColumnForFile(String file) {
     return file.getBytes()[0] - "a".getBytes()[0];
   }
 
-  private static boolean isValidMove(String[][] board, String move, boolean isWhiteMove) {
-    if(move.contains("x")) {
-      // Capture
-      int attackerCol = getColumnForFile(move.substring(0, 1));
-      int targetCol = getColumnForFile(move.substring(2, 3));
-      int targetRow = Integer.parseInt(move.substring(3));
+  private static boolean processCapture(String[][] board, String move, boolean isWhiteMove, boolean isCheck) {
+    int attackerCol = getColumnForFile(move.substring(0, 1));
+    int targetCol = getColumnForFile(move.substring(2, 3));
+    int targetRow = 8 - Integer.parseInt(move.substring(3));
+    if(isCheck) {
       if(isWhiteMove) {
         if(board[targetRow][targetCol].equals(".") || board[targetRow][targetCol].equals("P")) {
           // Attacked square is invalid
@@ -61,32 +74,55 @@ public class PawnMoveTracker {
         }
       }
     } else {
-      // Non-capture
-      int destCol = getColumnForFile(move.substring(0, 1));
-      int destRow = Integer.parseInt(move.substring(1, 2));
+      if(isWhiteMove) {
+        board[targetRow][targetCol] = "P";
+        board[targetRow + 1][attackerCol] = ".";
+      } else {
+        board[targetRow][targetCol] = "p";
+        board[targetRow - 1][attackerCol] = ".";
+      }
+
+      return true;
+    }
+  }
+
+  private static boolean processNonCapture(String[][] board, String move, boolean isWhiteMove, boolean isCheck) {
+    int destCol = getColumnForFile(move.substring(0, 1));
+    int destRow = 8 - Integer.parseInt(move.substring(1, 2));
+    if(isCheck) {
       if(isWhiteMove) {
         if((destRow != 4 && !board[destRow + 1][destCol].equals("P"))
           || destRow == 4 && !(board[destRow + 1][destCol].equals("P") || board[destRow + 2][destCol].equals("P"))) {
           // Source square is not occupied by white
           return false;
-        } else {
-          // Destination square is occupied
-          return board[destRow][destCol].equals(".");
         }
       } else {
         if((destRow != 3 && !board[destRow - 1][destCol].equals("p"))
           || destRow == 3 && !board[destRow - 1][destCol].equals("p") && !board[destRow - 2][destCol].equals("p")) {
           // Source square is not occupied by black
           return false;
-        } else {
-          // Destination square is occupied
-          return board[destRow][destCol].equals(".");
         }
       }
+
+      return board[destRow][destCol].equals(".");
+    } else {
+      if(isWhiteMove) {
+        board[destRow][destCol] = "P";
+        if(destRow == 4 && !board[destRow + 1][destCol].equals("P")) {
+          board[destRow + 2][destCol] = ".";
+        } else {
+          board[destRow + 1][destCol] = ".";
+        }
+      } else {
+        board[destRow][destCol] = "p";
+        if(destRow == 3 && !board[destRow - 1][destCol].equals("p")) {
+          board[destRow - 2][destCol] = ".";
+        } else {
+          board[destRow - 1][destCol] = ".";
+        }
+      }
+
+      return true;
     }
-  }
-
-  private static void makeMove(String[][] board, String move) {
-
   }
 }
