@@ -3,6 +3,66 @@
  */
 package codewars;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+class AppTest {
+  // test length-exception
+  @Test
+  public void testLengthException() {
+    try {
+      new Car(6, 1);
+      fail("Expected exception");
+    } catch (Exception e) {
+      // pass
+    }
+  };
+
+  // test no-door-exceptions
+  @Test
+  public void testNoDoorException() {
+    try {
+      new Car(7, 0);
+      fail("Expected exception");
+    } catch (Exception e) {
+      // pass
+    }
+  };
+
+  // test too-many-doors-exception
+  @Test
+  public void testManyDoorsException() {
+    try {
+      new Car(7, 4);
+      fail("Expected exception");
+    } catch (Exception e) {
+      // pass
+    }
+  };
+
+  // test small car
+  @Test
+  public void testSmallCar() { testCar(7, 1, " ____\n|  []\\\n-o--o-'"); }
+
+  // test medium car
+  @Test
+  public void testMediumCar() { testCar(12, 2, " _________\n|[]     []\\\n-o-o-----o-'"); }
+
+  // test large car
+  @Test
+  public void testLargeCar() { testCar(17, 5, " ______________\n|[][]    [][][]\\\n-o-o-o------o-o-'"); }
+
+  // helper method
+  private void testCar(int length, int doors, String test) {
+    Car car;
+    String value, message;
+    try { car = new Car(length, doors); }
+    catch (Exception e) { System.out.println("Unexpected Exception!" + e); return; }
+    value = car.body.component + car.chassis.component;
+    message = "\nExpected car:\n" + test + "\nYour car:\n" + value + "\n\n";
+    assertEquals(test, value, message); // test
+    System.out.println(message);
+  }
 }
