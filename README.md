@@ -1,4 +1,2 @@
-# codewars
-Testing skeleton for [codewars](https://www.codewars.com/) Java Katas.
-- Base skeleton is `master`
-- Individual katas are branches
+# Papers, Please - 3 Kyu
+[Link](https://www.codewars.com/kata/59d582cafbdd0b7ef90000a0)
