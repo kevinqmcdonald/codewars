@@ -13,8 +13,8 @@ public class Inspector {
   );
 
   private final Set<String> allowedCountries = new HashSet<>();
-  private final Set<Rule> vaccineRules = new HashSet<>();
-  private final Set<Rule> documentRules = new HashSet<>();
+  private final Map<String, Set<String>> vaccineRules = new HashMap<>();
+  private final Map<String, Set<String>> documentRules = new HashMap<>();
   private String wantedCriminal;
 
   public void receiveBulletin(String bulletin) {
@@ -56,7 +56,7 @@ public class Inspector {
   private void processVaccineRule(String rule) {
     String[] words = rule.split(" ");
     String vaccineName = words[words.length - 2];
-    if (rule.startsWith("Entrants") || rule.startsWith("Foreigners") || rule.startsWith("Workers")) {
+    if (rule.startsWith("Entrants") || rule.startsWith("Foreigners")) {
       // General rule
       addGeneralVaccineRule(rule, vaccineName);
     } else {
@@ -67,47 +67,43 @@ public class Inspector {
 
   private void addGeneralVaccineRule(String rule, String vaccineName) {
     // Determine the countries this general rule applies to
-    boolean isForWorkers = false;
     Set<String> countries;
     if (rule.startsWith("Entrants")) {
       countries = COUNTRY_NAMES;
-    } else if (rule.startsWith("Foreigners")) {
+    } else {
       countries = new HashSet<>(COUNTRY_NAMES);
       countries.remove("Arstotzka");
-    } else {
-      isForWorkers = true;
-      countries = getCountriesForRule(rule);
     }
 
-    Rule vaccineRule = new Rule(vaccineName, countries);
-    if (vaccineRules.contains(vaccineRule)) {
+    if (vaccineRules.containsKey(vaccineName)) {
       // Update existing rule
       if (rule.contains("no")) {
-        vaccineRules.remove(vaccineRule);
+        vaccineRules.remove(vaccineName);
       } else {
-        vaccineRules.stream().filter(r -> r.name.equals(vaccineName)).forEach(r -> r.countries.addAll(COUNTRY_NAMES));
+        vaccineRules.put(vaccineName, COUNTRY_NAMES);
       }
     } else if (!rule.contains("no")) {
       // Add a new rule
-      vaccineRules.add(vaccineRule);
+      vaccineRules.put(vaccineName, countries);
     }
   }
 
   private void addPerCountryVaccineRule(String rule, String vaccineName) {
     Set<String> countries = getCountriesForRule(rule);
-    Rule vaccineRule = new Rule(vaccineName, countries);
-    if (vaccineRules.contains(vaccineRule)) {
+    if (vaccineRules.containsKey(vaccineName)) {
       // Update existing rule
-      vaccineRules.stream().filter(r -> r.name.equals(vaccineName)).forEach(r -> {
+      vaccineRules.compute(vaccineName, (k, v) -> {
         if (rule.contains("no")) {
-          r.countries.removeAll(countries);
+          v.removeAll(countries);
         } else {
-          r.countries.addAll(countries);
+          v.addAll(countries);
         }
+
+        return v;
       });
     } else if (!rule.contains("no")) {
       // Add a new rule
-      vaccineRules.add(new Rule(vaccineName, countries));
+      vaccineRules.put(vaccineName, countries);
     }
   }
 
@@ -122,29 +118,5 @@ public class Inspector {
   public String inspect(Map<String, String> person) {
     // Your code here
     return "";
-  }
-}
-
-class Rule {
-  public final String name;
-  public Set<String> countries;
-  public boolean isForWorkers;
-
-  public Rule(String name, Set<String> countries) {
-    this.name = name;
-    this.countries = countries;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Rule that = (Rule) o;
-    return name.equals(that.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(name);
   }
 }
